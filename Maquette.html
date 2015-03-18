@@ -15,7 +15,7 @@
 			}
 			return false;
 		}	
-		
+
 		function buildNodes(artistes, g){
 			for(i =0 ; i < artistes.length; ++i){
 			
@@ -51,7 +51,7 @@
 								 {"name" : "Marc Minelli" , "type" : "artist", "style" : ["Rock"], "r" :5},
 								 {"name" : "Ubik" , "type" : "artist", "style" : ["Rock"], "r" :5},
 								 {"name" : "Complot Bronswick" , "type" : "artist", "style" : ["Rock","Electro"], "r" :5},
-								 {"name" : "Les Nus" , "type" : "artist", "style" : ["Rock","Electro"], "r" :5},
+								 {"name" : "Les Nus" , "type" : "artist", "style" : ["Rock"], "r" :5}
 								 
 							];
 				
@@ -105,7 +105,18 @@
 									linkUI.attr('stroke', isOn ? 'red' : 'gray');
 			    				}
 			 			});
-		    		};
+		    		},
+					checkArtist = function(data){
+						return data.type == "artist";
+					},
+					printTab = function(data){
+						var res="";
+						for (i=0; i<data.length; ++i)
+							res += data[i] + " ";
+							
+						return res;
+					}
+					;
 			  svgGraphics.node(function(node){
 			  
 			  if (node.data){
@@ -125,6 +136,12 @@
 						highlightRelatedNodes(node.id, true);
 					}, function() { // mouse out
 						highlightRelatedNodes(node.id, false);
+					});
+					
+					$(circle).click(function() { // mouse over
+						if (checkArtist(node.data)){
+							alert(" Artiste : "+node.data.name+"\n"+"Styles musicaux : "+printTab(node.data.style));
+						}
 					});
 
 				return circle;
