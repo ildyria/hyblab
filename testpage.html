@@ -34,45 +34,35 @@
 			
 			var graphics = Viva.Graph.View.svgGraphics();
 			
-			graphics.node(function(node) {
-                // node.data holds custom object passed to graph.addNode():
-				
+			graphics.node(function(node){
 				if (node.data){
-					var url = 'img/' + node.data.style + '.png';
+					
+                        var circle = Viva.Graph.svg('circle')
+                            .attr('r', 7)
+                            .attr('stroke', '#fff')
+                            .attr('stroke-width', '1.5px')
+                            .attr("fill", "#888888");
 
-					if (node.data.genre){
-						return Viva.Graph.svg('image')
-						.attr('width', node.data.width)
-						.attr('height', node.data.height)
-						.link(url);
+                        circle.append('title').text(node.data.name);
+
+                        return circle;
 					}
-					else{
-						var rfill;
-						var gfill;
-						var bfill;		
-						
-						rfill = appartient(node.data.style, 'Rock') ? 'FF' : '00';
-						gfill = appartient(node.data.style, 'Jazz') ? 'FF' : '00';
-						bfill = appartient(node.data.style, 'Electro') ? 'FF' : '00';
-												var fillCollins = "#"+rfill+gfill+bfill;
-						
-						var viva = Viva.Graph.svg('circle')
-							.attr('r', 5)
-							.attr('fill', fillCollins);
-							
-						viva.append('title').text(node.data.name);
-						
-						return viva;
-					}
+				else
+				{
+					var circle = Viva.Graph.svg('circle')
+                            .attr('r', 7)
+                            .attr('stroke', '#fff')
+                            .attr('stroke-width', '1.5px')
+                            .attr("fill", "#101010");
+
+                        circle.append('title').text(node.data.name);
+
+                        return circle;
 				}
-				else{
-					var url = 'img/default.png';
-					return Viva.Graph.svg('image')
-					.attr('width', 24)
-					.attr('height', 24)
-					.link(url);
-				}
-				});
+                    }).placeNode(function(nodeUI, pos){
+                        nodeUI.attr( "cx", pos.x).attr("cy", pos.y);
+                    });
+
 			
 			/*graphics.placeNode(function(nodeUI, pos) {
                 // nodeUI - is exactly the same object that we returned from
