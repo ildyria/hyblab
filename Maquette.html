@@ -14,7 +14,21 @@
 			}
 			return false;
 		}	
-
+		
+		function buildNodes(artistes, g){
+			for(i =0 ; i < artistes.length; ++i){
+			
+				g.addNode(artistes[i].name,  artistes[i]);
+				console.log(artistes[i]);
+				for(j=0; j< artistes[i].style.length; ++j){
+					
+					var styleN = artistes[i].style[j];
+					var petitNom = artistes[i].name;
+					g.addLink(styleN, petitNom); 
+				}
+			}
+		}
+		
 		/*global Viva, $*/
 		function onLoad() {
 		    var d3Sample = function(){
@@ -24,21 +38,18 @@
 				g.addNode('Rock', {"type" : "music", "style" : ['guitar'], "r" :10});
 				g.addNode('Jazz', {"type" : "music", "style" : ['piano'], "r" :10});
 				g.addNode('Electro', {"type" : "music", "style" : ['dj'], "r" :10});
-
-				var listStyles = ['Rock', 'Jazz', 'Electro'];
 				
-				for (j = 0; j < listStyles.length; ++j) {
-					
-					for(i =0; i < 10; ++i){
-						var name = listStyles[j];
-						var sndname = name+i;
-						g.addNode(sndname, {"name" : sndname , "type" : "artist", "style" : [name], "r" :5});
-						g.addLink(name, sndname);
-					}
-				}
-
-
-			  return g;
+				var artistes = [ {"name" :" DJ Morpheus ", "type" : "artist", "style" : ["Rock", "Electro"], "r" :5},
+								 {"name" : "Big Buddha" , "type" : "artist", "style" : ["Electro"], "r" :5},
+								 {"name" : "DJ Azaxx ", "type" : "artist", "style" : ["Jazz"], "r" :5},
+								 {"name" : "DJ Zebra" , "type" : "artist", "style" : ["Rock", "Electro","Jazz"], "r" :5},
+								 {"name" : "Kosmo Pilot" , "type" : "artist", "style" : ["Rock"], "r" :5}
+							];
+				
+				buildNodes(artistes, g);				
+				
+				var listStyles = ['Rock', 'Jazz', 'Electro'];
+				return g;
 		    };
 
 /*			var colors = [
@@ -77,6 +88,8 @@
 
 			  var svgGraphics = Viva.Graph.View.svgGraphics();
 			  svgGraphics.node(function(node){
+			  
+			  if (node.data){
 					var rfill = appartient(node.data.style, 'Rock') ? 'FF' : '00';
 					var gfill = appartient(node.data.style, 'Jazz') ? 'FF' : '00';
 					var bfill = appartient(node.data.style, 'Electro') ? 'FF' : '00';
@@ -90,6 +103,14 @@
 					circle.append('title').text(node.data.name);
 
 				return circle;
+				}
+				else 
+					return Viva.Graph.svg('circle')
+					.attr('r', 5)
+					.attr('stroke', '#AAA')
+					.attr('stroke-width', '0.5px')
+					.attr("fill", "#FFFFFF");
+					//circle.append('title').text(node.data.name);
 
 				}).placeNode(function(nodeUI, pos){
 				nodeUI.attr( "cx", pos.x).attr("cy", pos.y);
