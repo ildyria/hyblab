@@ -21,9 +21,9 @@
 				var g = Viva.Graph.graph();
 				g.Name = "Sample graph from d3 library";
 
-				g.addNode('Rock', {"type" : "music", "style" : ['guitar'], "r" :24});
-				g.addNode('Jazz', {"type" : "music", "style" : ['piano'], "r" :24});
-				g.addNode('Electro', {"type" : "music", "style" : ['dj'], "r" :24});
+				g.addNode('Rock', {"type" : "music", "style" : ['guitar'], "r" :10});
+				g.addNode('Jazz', {"type" : "music", "style" : ['piano'], "r" :10});
+				g.addNode('Electro', {"type" : "music", "style" : ['dj'], "r" :10});
 
 				var listStyles = ['Rock', 'Jazz', 'Electro'];
 				
@@ -32,7 +32,7 @@
 					for(i =0; i < 10; ++i){
 						var name = listStyles[j];
 						var sndname = name+i;
-						g.addNode(sndname, {"name" : sndname , "type" : "artist", "style" : [name], "r" :24});
+						g.addNode(sndname, {"name" : sndname , "type" : "artist", "style" : [name], "r" :5});
 						g.addLink(name, sndname);
 					}
 				}
