@@ -5,6 +5,7 @@
 	  <meta name="viewport" content="width=device-width, user-scalable=no">
 	  <title>VivaGraphs test page</title>
 
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	  <script src="../dist/vivagraph.js"></script>
 	  <script type='text/javascript'>
         function appartient(tab, string){
@@ -86,7 +87,17 @@
 				gravity : -1
 			  });
 
-			  var svgGraphics = Viva.Graph.View.svgGraphics();
+			  var svgGraphics = Viva.Graph.View.svgGraphics(),
+					highlightRelatedNodes = function(nodeId, isOn) {
+						// just enumerate all realted nodes and update link color:
+						graph.forEachLinkedNode(nodeId, function(node, link){
+							var linkUI = svgGraphics.getLinkUI(link.id);
+							if (linkUI) {
+									// linkUI is a UI object created by graphics below
+									linkUI.attr('stroke', isOn ? 'red' : 'gray');
+			    				}
+			 			});
+		    		};
 			  svgGraphics.node(function(node){
 			  
 			  if (node.data){
@@ -101,6 +112,12 @@
 					.attr('stroke-width', '0.5px')
 					.attr("fill", fillCollins);
 					circle.append('title').text(node.data.name);
+
+					$(circle).hover(function() { // mouse over
+						highlightRelatedNodes(node.id, true);
+					}, function() { // mouse out
+						highlightRelatedNodes(node.id, false);
+					});
 
 				return circle;
 				}
